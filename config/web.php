@@ -52,6 +52,11 @@ $config = [
         ],
         */
     ],
+    'modules' => [
+        'dishes' => [
+            'class' => 'app\modules\dishes\Module',
+        ],
+    ],
     'params' => $params,
 ];
 
