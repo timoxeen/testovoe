@@ -32,6 +32,7 @@ class Dish extends \yii\db\ActiveRecord
         return [
             [['active'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            [['ingredients'], 'safe']
         ];
     }
 
@@ -60,6 +61,12 @@ class Dish extends \yii\db\ActiveRecord
      */
     public function getIngredients()
     {
-        return $this->hasMany(Ingredient::className(), ['id' => 'ingredient_id'])->viaTable('ingredient_dish', ['dish_id' => 'id']);
+        return $this->hasMany(Ingredient::className(), ['id' => 'ingredient_id'])
+            ->viaTable('ingredient_dish', ['dish_id' => 'id']);
+    }
+
+    public function getIngred()
+    {
+
     }
 }
