@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'ingredients')
+    <?= $form->field($model, 'ingredientIds')
         ->checkboxList(
             ArrayHelper::map(Ingredient::find()->all(), 'id', 'name'),
             [

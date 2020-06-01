@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3cb0dfc5afc56b7b93b151dc43c946e0",
+    "content-hash": "a2db82dceb9dc86e10859c48ef427f3d",
     "packages": [
         {
             "name": "2amigos/yii2-ckeditor-widget",
@@ -223,7 +223,7 @@
             "version": "3.3.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "9e8ec3d10fad04748176144f108d7355662ae75e"
             },
             "dist": {
@@ -2781,6 +2781,57 @@
             "time": "2020-05-21T03:33:49+00:00"
         },
         {
+            "name": "yii2tech/ar-linkmany",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yii2tech/ar-linkmany.git",
+                "reference": "b13c3e6cc4b754420a11066ac650db565074d3c6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yii2tech/ar-linkmany/zipball/b13c3e6cc4b754420a11066ac650db565074d3c6",
+                "reference": "b13c3e6cc4b754420a11066ac650db565074d3c6",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "yii2tech\\ar\\linkmany\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Klimov",
+                    "email": "klimov.paul@gmail.com"
+                }
+            ],
+            "description": "Provides support for many-to-many relations saving in Yii2 ActiveRecord",
+            "keywords": [
+                "active",
+                "link",
+                "many",
+                "many to many",
+                "many-to-many",
+                "record",
+                "relaton",
+                "yii2"
+            ],
+            "time": "2018-02-09T14:02:04+00:00"
+        },
+        {
             "name": "yiisoft/yii2",
             "version": "2.0.16",
             "source": {
@@ -3376,6 +3427,7 @@
                 "functional testing",
                 "unit testing"
             ],
+            "abandoned": true,
             "time": "2018-02-26T23:42:52+00:00"
         },
         {

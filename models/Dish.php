@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii2tech\ar\linkmany\LinkManyBehavior;
 
 /**
  * This is the model class for table "dish".
@@ -16,6 +17,22 @@ use Yii;
  */
 class Dish extends \yii\db\ActiveRecord
 {
+    public $countIngredients;
+    public $ingredientIds;
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            'linkGroupBehavior' => [
+                'class' => LinkManyBehavior::className(),
+                'relation' => 'ingredients',
+                'relationReferenceAttribute' => 'ingredientIds'
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,7 +49,7 @@ class Dish extends \yii\db\ActiveRecord
         return [
             [['active'], 'integer'],
             [['name'], 'string', 'max' => 255],
-            [['ingredients'], 'safe']
+            [['ingredientIds'], 'safe']
         ];
     }
 
@@ -43,7 +60,7 @@ class Dish extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Наименование блюда',
             'active' => 'Active',
         ];
     }
@@ -65,8 +82,14 @@ class Dish extends \yii\db\ActiveRecord
             ->viaTable('ingredient_dish', ['dish_id' => 'id']);
     }
 
-    public function getIngred()
+    public function getConsist()
     {
-
+        $consist = [];
+        $ingredients = $this->ingredients;
+        foreach ($ingredients as $ingredient) {
+            $consist[] = $ingredient->name;
+        }
+        return implode(', ', $consist);
     }
+
 }

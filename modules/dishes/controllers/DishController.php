@@ -5,6 +5,7 @@ namespace app\modules\dishes\controllers;
 use Yii;
 use app\models\Dish;
 use app\models\DishSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +21,15 @@ class DishController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -54,8 +64,7 @@ class DishController extends Controller
     {
 
         return $this->render('view', [
-            'model' => $this->findModel($id),
-            'ingredients' => $this->findModel($id)->ingredients
+            'model' => $this->findModel($id)
         ]);
     }
 

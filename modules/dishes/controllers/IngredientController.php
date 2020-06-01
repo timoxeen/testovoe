@@ -5,6 +5,7 @@ namespace app\modules\dishes\controllers;
 use Yii;
 use app\models\Ingredient;
 use app\models\IngredientSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +21,15 @@ class IngredientController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -115,6 +125,10 @@ class IngredientController extends Controller
         $model->active = $model->active ? 0 : 1;
         $model->save();
 
+        foreach ($model->dishes as $dish) {
+            $dish->active = $dish->active ? 0 : 1;
+            $dish->save();
+        }
         return $this->redirect(['index']);
     }
     /**

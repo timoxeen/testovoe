@@ -27,8 +27,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-            'active',
-
+            [
+                'format' => 'raw',
+                'label' => 'Ингредиенты',
+                'value' => function($model)
+                {
+                    return $model->consist;
+                },
+            ],
+            [
+                'header' => 'Active',
+                'attribute' => 'active',
+                'value' => function ($model) {
+                    return $model->active ? 'Не скрыт' : 'Скрыт';
+                },
+                'filter' => [
+                    0 => 'Скрыт',
+                    1 => 'Не скрыт'
+                ],
+                'format'=>'raw'
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

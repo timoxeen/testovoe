@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             ['class' => 'yii\grid\ActionColumn'],
             [
-                'value' => function ($model, $key, $index, $widget) {
+                'value' => function ($model) {
                     return $model->active
                         ? Html::a(
                             'Скрыть',

@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -29,13 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'name',
-            'active',
             [
                 'format' => 'raw',
                 'label' => 'Ингредиенты',
-                'value' => $model->ingredients,
+                'value' => $model->consist
+
             ]
         ],
     ]) ?>
