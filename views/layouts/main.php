@@ -3,7 +3,8 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use app\widgets\Alert;
+use yii\bootstrap\Alert;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -62,7 +63,12 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= Alert::widget() ?>
+        <?php if(Yii::$app->session->hasFlash('alert')):?>
+            <?php echo Alert::widget([
+                'body'=>ArrayHelper::getValue(Yii::$app->session->getFlash('alert'), 'body'),
+                'options'=>ArrayHelper::getValue(Yii::$app->session->getFlash('alert'), 'options'),
+            ])?>
+        <?php endif; ?>
         <?= $content ?>
     </div>
 </div>

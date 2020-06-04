@@ -26,17 +26,23 @@ class DefaultController extends Controller
         $countQueryIngredients = empty($getParams['DishSearch']['ingredientIds'])
             ? 0
             : sizeof($getParams['DishSearch']['ingredientIds']);
-
         $searchModel = new DishSearch();
-        $dataProvider = $searchModel->searchFront($getParams);
-//        var_dump($searchModel->ingredientIds);
-//        var_dump($dataProvider); die();
         if ($countQueryIngredients < 2) {
-            $message = 'Выберите больше ингредиентов';
+            Yii::$app->getSession()->setFlash('alert', [
+                'body' => 'Выберите больше ингредиентов',
+                'options' => ['class'=>'alert-danger']
+            ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dishes' => $dishes,
+                'message' => $message
+            ]);
         }
+
+
+        $dataProvider = $searchModel->searchFront($getParams);
         foreach ($dataProvider->models as $dish) {
-            if (((int)$dish->ingredientQuery - (int)$dish->raznica) -
-				((int)$dish->countIngredients - (int)$dish->raznica) == 0) {
+            if ($dish->differenceIngredients == 0) {
                 $dishes[$dish->id]['name'] = $dish->name;
                 $dishes[$dish->id]['count'] = $dish->countIngredients;
                 $dishes[$dish->id]['ingredients'] = $dish->consist;
@@ -45,12 +51,11 @@ class DefaultController extends Controller
                 $dishes2[$dish->id]['count'] = $dish->countIngredients;
                 $dishes2[$dish->id]['ingredients'] = $dish->consist;
             }
-
         }
+
         if (empty($dishes)) {
         	$dishes = $dishes2;
 		}
-        //var_dump($dishes); die();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dishes' => $dishes,

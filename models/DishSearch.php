@@ -44,8 +44,6 @@ class DishSearch extends Dish
     {
         $query = Dish::find();
 
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -53,8 +51,6 @@ class DishSearch extends Dish
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
@@ -71,27 +67,39 @@ class DishSearch extends Dish
 
     public function searchFront($params)
     {
+
 		$subCountIngredientsQuery = Ingredient::find()
 			->select(['count(id) as countQueryIngredients']);
 
 		$subQuery = Dish::find()
-            ->select(['dish.id', 'dish.name', 'count(dish.id) as countIngredients'])
-            ->joinWith('ingredients')
+            ->select(['dish.id', 'dish.name', 'count(i.id) as countIngredients'])
+            ->joinWith('ingredients i')
             ->groupBy(['dish.id', 'dish.name']);
 
         $query = Dish::find()
-			->select([
-				'd2.id',
-				'd2.name',
-				'd2.countIngredients',
-				'ingredientQuery' => $subCountIngredientsQuery,
-				'raznica' => 'count(i2.id)'])
+			->select(
+			    [
+                    'd2.id',
+                    'd2.name',
+                    'd2.countIngredients',
+                    '(e2.countQueryIngredients - count(i2.id))'
+                        . ' - (d2.countIngredients - count(i2.id)) '
+                        . 'as differenceIngredients'
+                ]
+            )
             ->from(['d2' => $subQuery])
 			->joinWith('ingredients i2')
+            ->leftJoin(['e2' => $subCountIngredientsQuery], '1=1')
             ->where(['>=','d2.countIngredients', 2])
-			->groupBy(['d2.id', 'd2.name', 'd2.countIngredients'])
+			->groupBy(
+			    [
+			        'd2.id',
+                    'd2.name',
+                    'd2.countIngredients',
+                    'e2.countQueryIngredients'
+                ]
+            )
             ->orderBy(['d2.countIngredients' => SORT_DESC]);
-        // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -100,32 +108,21 @@ class DishSearch extends Dish
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
         $subCountIngredientsQuery->andFilterWhere([
 			'id' => $this->ingredientIds
 		]);
 
-        // grid filtering conditions
         $subQuery->andFilterWhere([
             'id' => $this->id,
             'dish.active' => 1,
-        ]);
-        $subQuery->andFilterWhere([
-            'ingredient.id' => $this->ingredientIds
         ]);
 
         $subQuery->andFilterWhere([
             'like', 'name', $this->name
         ]);
-//        if (!empty($this->ingredientIds)) {
-//            $query->andFilterWhere([
-//                'countIngredients' => sizeof($this->ingredientIds)
-//            ]);
-//        }
-//        var_dump($query); die();
+
         return $dataProvider;
     }
 }
