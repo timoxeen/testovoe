@@ -18,7 +18,8 @@ use yii2tech\ar\linkmany\LinkManyBehavior;
 class Dish extends \yii\db\ActiveRecord
 {
     public $countIngredients;
-    public $ingredientIds;
+    public $ingredientQuery;
+    public $raznica;
     /**
      * @return array
      */

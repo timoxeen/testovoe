@@ -35,18 +35,21 @@ class DefaultController extends Controller
             $message = 'Выберите больше ингредиентов';
         }
         foreach ($dataProvider->models as $dish) {
-            if ($dish->countIngredients == $countQueryIngredients) {
+            if (((int)$dish->ingredientQuery - (int)$dish->raznica) -
+				((int)$dish->countIngredients - (int)$dish->raznica) == 0) {
                 $dishes[$dish->id]['name'] = $dish->name;
                 $dishes[$dish->id]['count'] = $dish->countIngredients;
                 $dishes[$dish->id]['ingredients'] = $dish->consist;
-            }
-            if ($dish->countIngredients < $countQueryIngredients) {
-                $dishes[$dish->id]['name'] = $dish->name;
-                $dishes[$dish->id]['count'] = $dish->countIngredients;
-                $dishes[$dish->id]['ingredients'] = $dish->consist;
+            } else {
+                $dishes2[$dish->id]['name'] = $dish->name;
+                $dishes2[$dish->id]['count'] = $dish->countIngredients;
+                $dishes2[$dish->id]['ingredients'] = $dish->consist;
             }
 
         }
+        if (empty($dishes)) {
+        	$dishes = $dishes2;
+		}
         //var_dump($dishes); die();
         return $this->render('index', [
             'searchModel' => $searchModel,

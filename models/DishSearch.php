@@ -71,15 +71,26 @@ class DishSearch extends Dish
 
     public function searchFront($params)
     {
-        $subQuery = Dish::find()
+		$subCountIngredientsQuery = Ingredient::find()
+			->select(['count(id) as countQueryIngredients']);
+
+		$subQuery = Dish::find()
             ->select(['dish.id', 'dish.name', 'count(dish.id) as countIngredients'])
             ->joinWith('ingredients')
             ->groupBy(['dish.id', 'dish.name']);
 
         $query = Dish::find()
-            ->from(['u' => $subQuery])
-            ->where(['>=','countIngredients', 2])
-            ->orderBy(['countIngredients' => SORT_DESC]);
+			->select([
+				'd2.id',
+				'd2.name',
+				'd2.countIngredients',
+				'ingredientQuery' => $subCountIngredientsQuery,
+				'raznica' => 'count(i2.id)'])
+            ->from(['d2' => $subQuery])
+			->joinWith('ingredients i2')
+            ->where(['>=','d2.countIngredients', 2])
+			->groupBy(['d2.id', 'd2.name', 'd2.countIngredients'])
+            ->orderBy(['d2.countIngredients' => SORT_DESC]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -93,6 +104,9 @@ class DishSearch extends Dish
             // $query->where('0=1');
             return $dataProvider;
         }
+        $subCountIngredientsQuery->andFilterWhere([
+			'id' => $this->ingredientIds
+		]);
 
         // grid filtering conditions
         $subQuery->andFilterWhere([

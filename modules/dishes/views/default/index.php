@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <tr>
             <th>Блюдо</th>
             <th>Ингредиенты</th>
+            <th>Количество ингредиентов</th>
         </tr>
     <?php foreach ($dishes as $modelDish) : ?>
         <tr>
