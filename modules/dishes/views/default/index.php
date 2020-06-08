@@ -14,8 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?php if (!empty($message)) : echo Html::encode($message) ?>
-    <?php else: ?>
+    <?php if ($countQueryIngredients > 1) : ?>
     <table class="table table-striped">
         <tr>
             <th>Блюдо</th>

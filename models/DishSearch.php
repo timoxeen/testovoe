@@ -82,9 +82,8 @@ class DishSearch extends Dish
                     'd2.id',
                     'd2.name',
                     'd2.countIngredients',
-                    '(e2.countQueryIngredients - count(i2.id))'
-                        . ' - (d2.countIngredients - count(i2.id)) '
-                        . 'as differenceIngredients'
+                    'e2.countQueryIngredients',
+					'count(i2.id) as countFind'
                 ]
             )
             ->from(['d2' => $subQuery])
@@ -123,6 +122,9 @@ class DishSearch extends Dish
             'like', 'name', $this->name
         ]);
 
+		$query->andFilterWhere([
+			'i2.id' => $this->ingredientIds
+		]);
         return $dataProvider;
     }
 }

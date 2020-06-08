@@ -19,7 +19,6 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $message = '';
         $dishes = [];
         $dishes2 = [];
         $getParams = Yii::$app->request->queryParams;
@@ -27,26 +26,28 @@ class DefaultController extends Controller
             ? 0
             : sizeof($getParams['DishSearch']['ingredientIds']);
         $searchModel = new DishSearch();
-        if ($countQueryIngredients < 2) {
+        if (!empty($getParams) && $countQueryIngredients < 2) {
             Yii::$app->getSession()->setFlash('alert', [
                 'body' => 'Выберите больше ингредиентов',
-                'options' => ['class'=>'alert-danger']
+                'options' => ['class'=>'alert-warning']
             ]);
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dishes' => $dishes,
-                'message' => $message
+				'countQueryIngredients' => $countQueryIngredients
             ]);
         }
 
-
         $dataProvider = $searchModel->searchFront($getParams);
         foreach ($dataProvider->models as $dish) {
-            if ($dish->differenceIngredients == 0) {
+            if (
+            	$dish->countIngredients == $dish->countQueryIngredients
+				&& $dish->countFind == $dish->countIngredients
+			) {
                 $dishes[$dish->id]['name'] = $dish->name;
                 $dishes[$dish->id]['count'] = $dish->countIngredients;
                 $dishes[$dish->id]['ingredients'] = $dish->consist;
-            } else {
+            } elseif ($dish->countFind >= 2) {
                 $dishes2[$dish->id]['name'] = $dish->name;
                 $dishes2[$dish->id]['count'] = $dish->countIngredients;
                 $dishes2[$dish->id]['ingredients'] = $dish->consist;
@@ -54,12 +55,19 @@ class DefaultController extends Controller
         }
 
         if (empty($dishes)) {
-        	$dishes = $dishes2;
+			(empty($dishes2))
+			? Yii::$app->getSession()->setFlash('alert',
+				[
+					'body' => 'Ничего не найдено',
+					'options' => ['class'=>'alert-danger']
+				]
+			)
+			: $dishes = $dishes2;
 		}
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dishes' => $dishes,
-            'message' => $message
+			'countQueryIngredients' => $countQueryIngredients
         ]);
     }
 
