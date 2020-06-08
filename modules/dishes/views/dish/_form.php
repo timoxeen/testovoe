@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
             [
                 'multiple' => true
             ]
-        ) ?>
+        )->label('Состав ингредиентов') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
