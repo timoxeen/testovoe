@@ -63,7 +63,7 @@ class Dish extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Наименование блюда',
-            'active' => 'Active',
+            'active' => 'Скрыто?',
         ];
     }
 

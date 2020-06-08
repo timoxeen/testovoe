@@ -42,8 +42,8 @@ class Ingredient extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'active' => 'Active',
+            'name' => 'Название ингредиента',
+            'active' => 'Скрыт?',
         ];
     }
 
