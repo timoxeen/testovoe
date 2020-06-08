@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\IngredientSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Ingredients';
+$this->title = 'Ингредиенты';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ingredient-index">
@@ -16,7 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Ingredient', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить ингредиент', ['create'], ['class' => 'btn 
+        btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -24,11 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
             'name',
             [
-                'header' => 'Active',
+                'header' => 'Скрыт?',
                 'attribute' => 'active',
                 'value' => function ($model, $key, $index, $widget) {
                     return $model->active ? 'Не скрыт' : 'Скрыт';
@@ -39,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 'format'=>'raw'
             ],
-            ['class' => 'yii\grid\ActionColumn'],
             [
                 'value' => function ($model) {
                     return $model->active
@@ -65,7 +63,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         );
                 },
                 'format'=>'raw'
-            ]
+            ],
+			['class' => 'yii\grid\ActionColumn']
         ],
     ]); ?>
 </div>

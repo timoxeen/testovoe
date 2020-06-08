@@ -98,7 +98,7 @@ class DishSearch extends Dish
                     'e2.countQueryIngredients'
                 ]
             )
-            ->orderBy(['d2.countIngredients' => SORT_DESC]);
+            ->orderBy(['countFind' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

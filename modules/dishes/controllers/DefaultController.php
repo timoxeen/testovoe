@@ -46,10 +46,14 @@ class DefaultController extends Controller
 			) {
                 $dishes[$dish->id]['name'] = $dish->name;
                 $dishes[$dish->id]['count'] = $dish->countIngredients;
-                $dishes[$dish->id]['ingredients'] = $dish->consist;
+				$dishes[$dish->id]['count_query'] = $dish->countQueryIngredients;
+				$dishes[$dish->id]['count_find'] = $dish->countFind;
+				$dishes[$dish->id]['ingredients'] = $dish->consist;
             } elseif ($dish->countFind >= 2) {
                 $dishes2[$dish->id]['name'] = $dish->name;
                 $dishes2[$dish->id]['count'] = $dish->countIngredients;
+				$dishes2[$dish->id]['count_query'] = $dish->countQueryIngredients;
+				$dishes2[$dish->id]['count_find'] = $dish->countFind;
                 $dishes2[$dish->id]['ingredients'] = $dish->consist;
             }
         }
